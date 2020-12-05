@@ -11,14 +11,74 @@ At the moment Windows OS is not supported. There are no any known terraform limi
 # Basic usage
 
 Basic usage is pretty simple: you create check module, you pass condition variable and you get error if it doesn't interpolate to true value. Example presented below ensures that at least one subnet exists in given AWS VPC with vpc_id = "vpc-funnyid".
-```
+
+```terraform
 data "aws_subnet_ids" "example" {
   vpc_id = "vpc-funnyid"
 }
 
-module "subnets_are_present" {
-    source    = "kchugalinskiy/assert/null"
-    condition = "${0 != length(data.aws_subnet_ids.example.ids)}"
+module "ensure_subnets_are_present" {
+    source    = "github.com/CodyKochmann/terraform-assert"
+    condition = 0 != length(data.aws_subnet_ids.example.ids)
+    message   = "No pre-existing subnets were found in vpc-funnyid"
+}
+```
+
+# Other Example Usage
+
+```terraform
+module "assert-boolean" {
+  source    = "github.com/CodyKochmann/terraform-assert"
+  condition = 1 != 2
+  message   = "this really should have worked"
+}
+
+module "assert-equality" {
+  source   = "git::https://github.com/CodyKochmann/terraform-assert.git//modules/eq"
+  expected = 1
+  actual   = 1
+}
+
+module "assert-equality-strings" {
+  source   = "git::https://github.com/CodyKochmann/terraform-assert.git//modules/eq"
+  expected = "hello world"
+  actual   = "hello world"
+}
+
+module "assert-unequality" {
+  source   = "git::https://github.com/CodyKochmann/terraform-assert.git//modules/neq"
+  unexpected = "hello world"
+  actual     = "hello"
+}
+
+module "assert-greater-or-equal" {
+  source   = "git::https://github.com/CodyKochmann/terraform-assert.git//modules/ge"
+  expected = 0
+  actual   = 2
+}
+
+module "assert-strict-greater" {
+  source   = "git::https://github.com/CodyKochmann/terraform-assert.git//modules/gt"
+  expected = 0
+  actual   = 1
+}
+
+module "assert-less-or-equal" {
+  source   = "git::https://github.com/CodyKochmann/terraform-assert.git//modules/le"
+  expected = 2
+  actual   = 0
+}
+
+module "assert-strict-less" {
+  source   = "git::https://github.com/CodyKochmann/terraform-assert.git//modules/lt"
+  expected = 1
+  actual   = 0
+}
+
+module "assert-match-regex" {
+  source   = "git::https://github.com/CodyKochmann/terraform-assert.git//modules/match"
+  regex  = "[a-z]*"
+  actual = "rego"
 }
 ```
 
