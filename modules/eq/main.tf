@@ -1,5 +1,5 @@
 terraform {
-  required_version = ">= 0.9.0"
+  required_version = ">= 0.12.0"
 }
 
 resource "null_resource" "checker" {
@@ -7,5 +7,5 @@ resource "null_resource" "checker" {
     command = "echo 'Condition failed. Expected: \"${var.expected}\" actual: \"${var.actual}\"' && exit 1"
   }
 
-  count = "${var.expected == var.actual ? 0 : 1}"
+  count = var.expected == var.actual ? 0 : 1
 }
