@@ -2,6 +2,7 @@
 # to get this functionality add any of the following to any resource
 # that needs to be blocked by your assertion's failure.
 #
+#   depends_on = [module.test_name]
 #   depends_on = [module.test_name.ok]
 #   depends_on = [module.test_name.result]
 #   depends_on = [module.test_name.success]
