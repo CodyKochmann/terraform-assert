@@ -3,5 +3,5 @@ resource "null_resource" "checker" {
     command = "echo \"String \"${var.actual}\" didn't match regex \"${var.regex}\"  \" && exit 1"
   }
 
-  count = "${length(replace(var.actual, format("/%s/", var.regex), "")) == 0 ? 0 : 1}"
+  count = length(replace(var.actual, format("/%s/", var.regex), "")) == 0 ? 0 : 1
 }
