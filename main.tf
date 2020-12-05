@@ -7,5 +7,5 @@ resource "null_resource" "checker" {
     command = "echo 'ASSERTION ERROR - ${var.message}' && exit 1"
   }
 
-  count = "${var.condition ? 0 : 1}"
+  count = var.condition ? 0 : 1
 }
